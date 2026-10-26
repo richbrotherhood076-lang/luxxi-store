@@ -1,117 +1,137 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0b0b0d">
-  <meta name="description" content="LUXXI STORE — toko digital pilihanmu.">
-  <title>LUXXI STORE — Digital Shop</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#087f5b">
+  <meta name="description" content="Sistem absensi digital sekolah.">
+  <title>ABSENSI SEKOLAH</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script defer src="app.js"></script>
 </head>
 <body>
-  <div class="announcement">WELCOME TO <strong>LUXXI STORE</strong> <span>✦</span> DIGITAL GOODS, MADE SIMPLE</div>
-  <header class="site-header">
-    <a class="brand" href="#" aria-label="LUXXI STORE beranda">
-      <span class="brand-mark">L</span>
-      <span>LUXXI<span class="brand-light"> STORE</span><small>DIGITAL GOODS</small></span>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Absensi Sekolah - beranda">
+      <span class="brand-logo" aria-hidden="true">
+        <svg viewBox="0 0 64 64" role="img">
+          <path d="M32 3 55 11v18c0 15-9 25-23 32C18 54 9 44 9 29V11L32 3Z" fill="#087f5b"/>
+          <path d="M32 8 50 14v15c0 12-7 21-18 27C21 50 14 41 14 29V14L32 8Z" fill="none" stroke="#b7f7d8" stroke-width="1.5"/>
+          <path d="M20 24.5 32 18l12 6.5v2H20v-2Z" fill="#fff"/>
+          <path d="M23 28h3v10h-3zm7 0h4v10h-4zm8 0h3v10h-3z" fill="#fff"/>
+          <path d="M19 40h26v3H19zM27 13h10v3H27z" fill="#b7f7d8"/>
+        </svg>
+      </span>
+      <span class="brand-copy"><strong>ABSENSI SEKOLAH</strong><small>Portal Kehadiran Digital</small></span>
     </a>
-    <nav class="desktop-nav">
-      <a href="#home">Beranda</a><a href="#catalog">Katalog</a><a href="#about">Tentang</a>
-    </nav>
-    <div class="header-actions">
-      <button class="icon-button" id="admin-open" aria-label="Buka panel admin" title="Panel admin">⚙</button>
-      <button class="cart-button" id="cart-open"><span>Keranjang</span><span class="cart-count" id="cart-count">0</span></button>
+    <div class="topbar-right">
+      <span class="secure-label"><span class="secure-dot"></span> Sistem Kehadiran</span>
+      <button id="logoutBtn" class="btn btn-outline hidden">Keluar <span aria-hidden="true">↗</span></button>
     </div>
   </header>
 
-  <main>
-    <section class="hero" id="home">
-      <div class="hero-orb orb-one"></div><div class="hero-orb orb-two"></div>
-      <div class="hero-content">
-        <p class="eyebrow"><span class="live-dot"></span> YOUR DIGITAL MARKETPLACE</p>
-        <h1>Upgrade your<br><span>digital life.</span></h1>
-        <p class="hero-copy">Temukan produk digital pilihan dengan proses pemesanan yang mudah, cepat, dan praktis.</p>
-        <div class="hero-actions"><a class="button button-gold" href="#catalog">Jelajahi Produk <span>↗</span></a><a class="text-link" href="#about">Kenali LUXXI <span>→</span></a></div>
-        <div class="hero-proof"><div class="proof-stars">★★★★★</div><span>Simple shopping. Better experience.</span></div>
+  <main class="container">
+    <section id="setupNotice" class="notice hidden"></section>
+
+    <section id="loginView" class="login-layout">
+      <div class="login-intro">
+        <span class="mini-label"><span class="mini-dot"></span> PORTAL SEKOLAH</span>
+        <h1>Hadir hari ini,<br><span>siapkan masa depan.</span></h1>
+        <p>Kelola kehadiran dengan lebih praktis. Masuk menggunakan akun yang diberikan oleh pihak sekolah.</p>
+        <div class="intro-points">
+          <div><span class="point-icon">✓</span><span><strong>Mudah digunakan</strong><small>Absensi dari HP atau laptop</small></span></div>
+          <div><span class="point-icon">▦</span><span><strong>Data tersimpan</strong><small>Riwayat dapat dilihat kembali</small></span></div>
+          <div><span class="point-icon">⌁</span><span><strong>Teratur dan transparan</strong><small>Rekap untuk siswa dan admin</small></span></div>
+        </div>
+        <div class="decor-orbit orbit-one"></div><div class="decor-orbit orbit-two"></div>
       </div>
-      <div class="hero-card">
-        <div class="hero-card-top"><span>LUXXI / DIGITAL</span><span class="card-spark">✳</span></div>
-        <div class="hero-card-symbol">L<span>✦</span></div>
-        <div class="hero-card-bottom"><div><small>CURATED FOR YOU</small><strong>Digital essentials.</strong></div><span class="round-arrow">↗</span></div>
+      <div class="login-card">
+        <div class="login-card-logo">
+          <span class="small-crest" aria-hidden="true">
+            <svg viewBox="0 0 64 64"><path d="M32 3 55 11v18c0 15-9 25-23 32C18 54 9 44 9 29V11L32 3Z" fill="#087f5b"/><path d="M20 24.5 32 18l12 6.5v2H20v-2Z" fill="#fff"/><path d="M23 28h3v10h-3zm7 0h4v10h-4zm8 0h3v10h-3zM19 40h26v3H19z" fill="#fff"/></svg>
+          </span>
+          <span><strong>Selamat datang</strong><small>Silakan masuk ke akun Anda</small></span>
+        </div>
+        <form id="loginForm">
+          <label for="email">Email akun</label>
+          <div class="input-wrap"><span aria-hidden="true">✉</span><input id="email" type="email" autocomplete="username" required placeholder="nama@sekolah.sch.id"></div>
+          <label for="password">Kata sandi</label>
+          <div class="input-wrap"><span aria-hidden="true">⌑</span><input id="password" type="password" autocomplete="current-password" required placeholder="Masukkan kata sandi"></div>
+          <button class="btn btn-primary full" type="submit">Masuk ke dashboard <span aria-hidden="true">→</span></button>
+          <p id="loginMessage" class="message" role="status"></p>
+        </form>
+        <p class="login-foot"><span aria-hidden="true">♧</span> Akses akun dikelola oleh pihak sekolah.</p>
       </div>
-      <div class="hero-footer"><span>01 — CURATED PRODUCTS</span><span>SCROLL TO EXPLORE ↓</span></div>
     </section>
 
-    <section class="benefits" aria-label="Keunggulan toko">
-      <div><span class="benefit-icon">✦</span><span><strong>Produk pilihan</strong><small>Dikurasi untukmu</small></span></div>
-      <div><span class="benefit-icon">↗</span><span><strong>Order praktis</strong><small>Checkout via WhatsApp</small></span></div>
-      <div><span class="benefit-icon">◇</span><span><strong>Pelayanan personal</strong><small>Hubungi admin langsung</small></span></div>
-    </section>
-
-    <section class="catalog-section section-wrap" id="catalog">
-      <div class="section-heading">
-        <div><p class="eyebrow">THE COLLECTION / 01</p><h2>Explore the <span>catalog.</span></h2><p class="section-subtitle">Pilih kebutuhan digitalmu dari koleksi LUXXI STORE.</p></div>
-        <div class="catalog-tools"><label class="search-box"><span>⌕</span><input id="search-input" type="search" placeholder="Cari produk..." aria-label="Cari produk"></label></div>
+    <section id="appView" class="hidden">
+      <div class="dashboard-heading">
+        <div><p class="eyebrow">RUANG KERJA DIGITAL</p><h1 id="welcomeTitle">Halo!</h1><p id="welcomeSub" class="muted"></p><span id="rolePill" class="pill dashboard-role">Siswa</span></div>
+        <div class="heading-date"><span class="calendar-icon">▦</span><span><small>Hari ini</small><strong id="dashboardDate">—</strong></span></div>
       </div>
-      <div class="filters" id="category-filters"></div>
-      <div class="product-grid" id="product-grid"></div>
-      <div class="empty-state hidden" id="empty-state"><span>◇</span><h3>Produk belum ditemukan</h3><p>Coba kata kunci atau kategori lainnya.</p></div>
-    </section>
 
-    <section class="promo section-wrap">
-      <div class="promo-mark">L.</div><div><p class="eyebrow">NEED SOMETHING ELSE?</p><h2>Let’s make it <span>happen.</span></h2><p>Belum menemukan yang kamu cari? Tanyakan ketersediaan produk kepada admin.</p></div><a class="button button-outline" id="ask-admin" href="#" target="_blank" rel="noopener">Tanya Admin <span>↗</span></a>
-    </section>
+      <section id="studentView" class="hidden">
+        <div class="student-grid">
+          <div class="panel attendance-panel">
+            <div class="section-heading"><div><span class="section-kicker">FORM ABSENSI</span><h2>Konfirmasi kehadiran</h2></div><span id="todayLabel" class="date-label"></span></div>
+            <p class="muted">Pilih status sesuai keadaanmu. Pastikan pilihan sudah benar sebelum menyimpan.</p>
+            <div class="status-grid">
+              <button class="status-choice selected" data-status="hadir"><span class="status-symbol">✓</span><strong>Hadir</strong><small>Saya hadir hari ini</small></button>
+              <button class="status-choice" data-status="sakit"><span class="status-symbol">＋</span><strong>Sakit</strong><small>Saya sedang sakit</small></button>
+              <button class="status-choice" data-status="izin"><span class="status-symbol">✎</span><strong>Izin</strong><small>Saya memiliki izin</small></button>
+            </div>
+            <label for="studentNote">Catatan <span class="optional">(opsional)</span></label>
+            <textarea id="studentNote" rows="3" maxlength="300" placeholder="Tambahkan keterangan jika diperlukan..."></textarea>
+            <button id="submitAttendance" class="btn btn-primary full">Simpan absensi <span aria-hidden="true">→</span></button>
+            <p id="attendanceMessage" class="message" role="status"></p>
+            <p class="privacy-note"><span aria-hidden="true">♧</span> Riwayat absensi hanya dapat dilihat oleh akunmu dan admin sekolah.</p>
+          </div>
+          <aside class="panel student-side">
+            <div class="side-icon">✦</div><span class="section-kicker">PENGINGAT</span>
+            <h3>Isi absensi dengan benar</h3>
+            <p>Periksa kembali status kehadiran sebelum menekan tombol simpan.</p>
+            <div class="reminder-line"></div>
+            <div class="reminder-item"><span class="reminder-dot green"></span><span><strong>Hadir</strong><small>Jika mengikuti kegiatan sekolah</small></span></div>
+            <div class="reminder-item"><span class="reminder-dot amber"></span><span><strong>Sakit</strong><small>Jika tidak hadir karena sakit</small></span></div>
+            <div class="reminder-item"><span class="reminder-dot blue"></span><span><strong>Izin</strong><small>Jika memiliki keperluan</small></span></div>
+          </aside>
+        </div>
+        <div class="panel history-panel">
+          <div class="section-heading"><div><span class="section-kicker">CATATAN PRIBADI</span><h2>Riwayat absensi saya</h2></div><button id="refreshMine" class="btn btn-outline">↻ Muat ulang</button></div>
+          <div id="myHistory" class="table-wrap"></div>
+        </div>
+      </section>
 
-    <section class="about-section section-wrap" id="about">
-      <p class="eyebrow">ABOUT LUXXI / 02</p><h2>Good things.<br><span>Easy access.</span></h2>
-      <p>LUXXI STORE adalah toko digital dengan pengalaman belanja yang ringkas. Pilih produk, masukkan ke keranjang, lalu lanjutkan pemesanan melalui WhatsApp.</p>
+      <section id="adminView" class="hidden">
+        <div class="stats-grid">
+          <div class="stat-card stat-total"><div class="stat-top"><span>Total tercatat</span><span class="stat-icon">▤</span></div><strong id="statTotal">0</strong><small>Data sesuai filter</small></div>
+          <div class="stat-card"><div class="stat-top"><span>Hadir</span><span class="stat-icon icon-green">✓</span></div><strong id="statHadir">0</strong><small>Status kehadiran</small></div>
+          <div class="stat-card"><div class="stat-top"><span>Sakit</span><span class="stat-icon icon-amber">＋</span></div><strong id="statSakit">0</strong><small>Perlu perhatian</small></div>
+          <div class="stat-card"><div class="stat-top"><span>Izin</span><span class="stat-icon icon-blue">✎</span></div><strong id="statIzin">0</strong><small>Izin tercatat</small></div>
+          <div class="stat-card"><div class="stat-top"><span>Alpa</span><span class="stat-icon icon-red">!</span></div><strong id="statAlpa">0</strong><small>Perlu ditinjau</small></div>
+        </div>
+        <div class="panel admin-panel">
+          <div class="section-heading"><div><span class="section-kicker">PENGELOLAAN DATA</span><h2>Rekap absensi siswa</h2><p class="muted compact">Cari, tinjau, dan koreksi catatan kehadiran.</p></div><button id="exportCsv" class="btn btn-primary">↓ Ekspor CSV</button></div>
+          <div class="filters">
+            <div><label for="filterDate">Tanggal</label><input id="filterDate" type="date"></div>
+            <div><label for="filterClass">Kelas</label><input id="filterClass" type="text" placeholder="Contoh: VII-A"></div>
+            <div><label for="filterName">Nama siswa</label><input id="filterName" type="search" placeholder="Cari nama siswa"></div>
+            <div class="filter-actions"><button id="applyFilters" class="btn btn-primary">Terapkan</button><button id="clearFilters" class="btn btn-outline">Reset</button></div>
+          </div>
+          <p id="adminMessage" class="message" role="status"></p>
+          <div id="adminTable" class="table-wrap"></div>
+        </div>
+      </section>
     </section>
   </main>
-
-  <footer class="site-footer"><a class="brand footer-brand" href="#"><span class="brand-mark">L</span><span>LUXXI<span class="brand-light"> STORE</span><small>DIGITAL GOODS</small></span></a><span>© <span id="year"></span> LUXXI STORE. All rights reserved.</span><a href="#home">Kembali ke atas ↑</a></footer>
-
-  <div class="overlay" id="cart-overlay" aria-hidden="true">
-    <aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="cart-title">
-      <div class="drawer-header"><div><p class="eyebrow">YOUR SELECTION</p><h2 id="cart-title">Keranjang <span id="cart-item-count">(0)</span></h2></div><button class="close-button" data-close="cart-overlay" aria-label="Tutup">×</button></div>
-      <div class="cart-items" id="cart-items"></div>
-      <div class="cart-empty" id="cart-empty"><span>◇</span><h3>Keranjang masih kosong</h3><p>Produk yang kamu pilih akan muncul di sini.</p><button class="button button-outline" data-close="cart-overlay">Mulai belanja</button></div>
-      <div class="cart-summary" id="cart-summary"><div class="summary-line"><span>Total</span><strong id="cart-total">Rp0</strong></div><p>Pesanan akan diteruskan ke WhatsApp admin untuk konfirmasi.</p><button class="button button-gold full-width" id="checkout-button">Checkout via WhatsApp ↗</button></div>
-    </aside>
-  </div>
-
-  <div class="overlay" id="admin-overlay" aria-hidden="true">
-    <section class="admin-modal" role="dialog" aria-modal="true" aria-labelledby="admin-title">
-      <div class="drawer-header"><div><p class="eyebrow">STORE MANAGEMENT</p><h2 id="admin-title">Panel <span>Admin.</span></h2></div><button class="close-button" data-close="admin-overlay" aria-label="Tutup">×</button></div>
-      <div id="admin-login">
-        <p class="admin-note">Masuk untuk mengelola katalog di browser ini.</p>
-        <form id="admin-login-form" class="admin-form"><label>Password admin<input id="admin-password" type="password" required placeholder="Masukkan password"></label><button class="button button-gold full-width" type="submit">Masuk ke panel</button><p class="form-hint">Password awal: <code>luxxi123</code>. Ganti di <code>app.js</code> sebelum dipublikasikan. Ini hanya pengunci tampilan, bukan keamanan backend.</p></form>
-      </div>
-      <div id="admin-dashboard" class="hidden">
-        <div class="admin-tabs"><button class="admin-tab active" data-tab="products">Produk</button><button class="admin-tab" data-tab="settings">Pengaturan</button></div>
-        <div id="admin-products-tab">
-          <form id="product-form" class="admin-form">
-            <input type="hidden" id="product-id">
-            <h3 id="product-form-title">Tambah produk</h3>
-            <label>Nama produk<input id="product-name" required maxlength="70" placeholder="Contoh: Premium Digital"></label>
-            <div class="form-row"><label>Harga (Rupiah)<input id="product-price" type="number" min="0" required placeholder="25000"></label><label>Kategori<input id="product-category" required maxlength="35" placeholder="Akun / Voucher"></label></div>
-            <label>URL gambar (opsional)<input id="product-image" type="url" placeholder="https://..."></label>
-            <label>Deskripsi<textarea id="product-description" rows="2" maxlength="220" placeholder="Deskripsi singkat produk"></textarea></label>
-            <div class="form-row"><button class="button button-gold" type="submit" id="save-product">Simpan produk</button><button class="button button-muted hidden" type="button" id="cancel-edit">Batal edit</button></div>
-          </form>
-          <div class="admin-product-list" id="admin-product-list"></div>
-        </div>
-        <div id="admin-settings-tab" class="hidden">
-          <form id="settings-form" class="admin-form"><label>Nomor WhatsApp admin<input id="settings-whatsapp" inputmode="numeric" placeholder="6281234567890" required></label><p class="form-hint">Gunakan kode negara, tanpa tanda +, spasi, atau strip. Contoh Indonesia: 62812xxxxxxx.</p><label>Nama toko<input id="settings-store-name" maxlength="50" required></label><button class="button button-gold full-width" type="submit">Simpan pengaturan</button></form>
-        </div>
-        <button class="text-link logout-link" id="admin-logout">Keluar dari panel ↗</button>
-      </div>
-      <p class="admin-status" id="admin-status" role="status"></p>
-    </section>
-  </div>
-  <div class="toast" id="toast" role="status"></div>
-  <script src="app.js"></script>
+  <footer><span class="footer-crest">AS</span><span><strong>ABSENSI SEKOLAH</strong><small>Portal Kehadiran Digital · Jaga keamanan akunmu</small></span></footer>
+  <script>
+    (function () {
+      const date = new Date();
+      const el = document.getElementById("dashboardDate");
+      if (el) el.textContent = date.toLocaleDateString("id-ID", { weekday:"long", day:"numeric", month:"long", year:"numeric" });
+    })();
+  </script>
 </body>
 </html>
